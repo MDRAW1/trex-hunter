@@ -1,6 +1,6 @@
 package com.trexhunter;
 
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -21,7 +21,7 @@ public final class ModItems {
                 key,
                 new SpawnEggItem(new Item.Properties().setId(key).spawnEgg(ModEntities.TREX)));
 
-        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.SPAWN_EGGS)
-                .register(entries -> entries.accept(TREX_SPAWN_EGG));
+        CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.SPAWN_EGGS)
+                .register(output -> output.accept(TREX_SPAWN_EGG));
     }
 }

@@ -7,6 +7,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.game.ClientboundSetActionBarTextPacket;
 import net.minecraft.network.protocol.game.ClientboundSetSubtitleTextPacket;
 import net.minecraft.network.protocol.game.ClientboundSetTitleTextPacket;
 import net.minecraft.network.protocol.game.ClientboundSetTitlesAnimationPacket;
@@ -99,7 +100,6 @@ public class TRexEntity extends Monster {
         this.stareTicks = 0;
         this.lostTicks = 0;
         this.life = 0;
-        this.setInvulnerable(false);
         this.setSilent(false);
         this.faceEntity(player, 1.0F);
     }
@@ -110,7 +110,6 @@ public class TRexEntity extends Monster {
         this.countdown = 0;
         this.stareTicks = 0;
         this.life = 0;
-        this.setInvulnerable(true);
         this.setSilent(true);
         this.faceEntity(player, 1.0F);
     }
@@ -286,10 +285,8 @@ public class TRexEntity extends Monster {
 
         if (this.countdown % 20 == 0) {
             int secs = this.countdown / 20;
-            player.displayClientMessage(
-                    Component.translatable("message.trexhunter.countdown", secs)
-                            .withStyle(ChatFormatting.DARK_RED, ChatFormatting.BOLD),
-                    true);
+            actionBar(player, Component.translatable("message.trexhunter.countdown", secs)
+                    .withStyle(ChatFormatting.DARK_RED, ChatFormatting.BOLD));
             if (secs > 0 && secs <= 5) {
                 player.playSound(SoundEvents.WARDEN_HEARTBEAT, 1.5F, 0.8F);
             }
@@ -303,11 +300,24 @@ public class TRexEntity extends Monster {
             this.setRoaring(false);
             this.playSound(SoundEvents.RAVAGER_ROAR, 10.0F, 0.4F);
             this.lastKnownPos = player.position();
-            player.displayClientMessage(
-                    Component.translatable("message.trexhunter.run")
-                            .withStyle(ChatFormatting.DARK_RED, ChatFormatting.BOLD),
-                    true);
+            actionBar(player, Component.translatable("message.trexhunter.run")
+                    .withStyle(ChatFormatting.DARK_RED, ChatFormatting.BOLD));
         }
+    }
+
+    private static void actionBar(Player player, Component text) {
+        if (player instanceof ServerPlayer sp) {
+            sp.connection.send(new ClientboundSetActionBarTextPacket(text));
+        }
+    }
+
+    /** O observador é imune a dano; só some sozinho. */
+    @Override
+    public boolean hurtServer(ServerLevel level, DamageSource source, float damage) {
+        if (this.mode == Mode.WATCHER) {
+            return false;
+        }
+        return super.hurtServer(level, source, damage);
     }
 
     private void sendTitle(Player player) {
