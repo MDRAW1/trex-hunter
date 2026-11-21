@@ -1,0 +1,8 @@
+{
+  "entity.trexhunter.trex": "Tyrannosaurus Rex",
+  "item.trexhunter.trex_spawn_egg": "Tyrannosaurus Rex Spawn Egg",
+  "message.trexhunter.countdown": "It's coming... %s",
+  "message.trexhunter.run": "RUN!",
+  "title.trexhunter.warning": "SOMETHING IS HUNTING YOU",
+  "title.trexhunter.subtitle": "You have %s seconds to hide or run"
+}

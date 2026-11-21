@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "id": "trexhunter",
+  "version": "${version}",
+  "name": "T-Rex Hunter",
+  "description": "Um tiranossauro aterrorizante que te caça aleatoriamente (20 segundos para se esconder ou fugir) e às vezes aparece só te observando na névoa.",
+  "authors": ["Você"],
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["com.trexhunter.TRexHunterMod"],
+    "client": ["com.trexhunter.client.TRexHunterClient"]
+  },
+  "depends": {
+    "fabricloader": ">=0.19.0",
+    "minecraft": "~26.3",
+    "java": ">=25",
+    "fabric-api": "*"
+  }
+}
